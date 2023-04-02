@@ -63,11 +63,6 @@ public class PautaService {
 
     @Scheduled(fixedDelay = 30000)
     public void enviarResultados(){
-//        List<Pauta> abertas = pautaRepository.findByStatus(PautaStatus.ABERTA).stream()
-//                .filter(p -> p.getFim_sessao().isBefore(LocalDateTime.now()))
-//                .toList();
-//        abertas.forEach(this::atualizarPauta);
-
         pautaRepository.findByStatus(PautaStatus.ABERTA).stream()
                 .filter(p -> p.getFim_sessao().isBefore(LocalDateTime.now()))
                 .forEach(pauta -> {
