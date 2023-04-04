@@ -1,7 +1,7 @@
 package com.example.desafiosicredi.v1.service;
 
 import com.example.desafiosicredi.enums.PautaStatus;
-import com.example.desafiosicredi.kafka.KafkaProducer;
+import com.example.desafiosicredi.v1.kafka.KafkaProducer;
 import com.example.desafiosicredi.mapper.PautaMapper;
 import com.example.desafiosicredi.mapper.ResultadoMapper;
 import com.example.desafiosicredi.mapper.SessaoMapper;

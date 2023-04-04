@@ -1,4 +1,4 @@
-package com.example.desafiosicredi.kafka;
+package com.example.desafiosicredi.v1.kafka;
 
 import lombok.AllArgsConstructor;
 import lombok.Generated;
