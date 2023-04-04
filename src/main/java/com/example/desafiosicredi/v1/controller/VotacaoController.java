@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
+@RequestMapping(path = "/v1")
 public class VotacaoController {
     @Autowired
     PautaService pautaService;
