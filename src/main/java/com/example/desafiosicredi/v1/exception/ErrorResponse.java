@@ -18,6 +18,5 @@ public class ErrorResponse {
     String message;
     HttpStatus status;
     LocalDateTime time;
-    List<String> errors;
 
 }

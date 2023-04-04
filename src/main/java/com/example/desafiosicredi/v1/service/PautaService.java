@@ -1,7 +1,6 @@
 package com.example.desafiosicredi.v1.service;
 
 import com.example.desafiosicredi.enums.PautaStatus;
-import com.example.desafiosicredi.v1.exception.GlobalRuntimeExceptionHandler;
 import com.example.desafiosicredi.kafka.KafkaProducer;
 import com.example.desafiosicredi.mapper.PautaMapper;
 import com.example.desafiosicredi.mapper.ResultadoMapper;
@@ -9,6 +8,8 @@ import com.example.desafiosicredi.mapper.SessaoMapper;
 import com.example.desafiosicredi.model.Pauta;
 import com.example.desafiosicredi.model.Voto;
 import com.example.desafiosicredi.repository.PautaRepository;
+import com.example.desafiosicredi.v1.exception.PautaFechadaException;
+import com.example.desafiosicredi.v1.exception.PautaNaoEncontradaException;
 import com.example.desafiosicredi.v1.request.PautaRequest;
 import com.example.desafiosicredi.v1.request.SessaoRequest;
 import com.example.desafiosicredi.v1.response.ResultadoResponse;
@@ -16,6 +17,7 @@ import com.example.desafiosicredi.v1.response.SessaoResponse;
 import lombok.AllArgsConstructor;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
@@ -45,11 +47,11 @@ public class PautaService {
 
     public SessaoResponse abrirSessao(SessaoRequest sessaoRequest){
         Pauta pauta = pautaRepository.findById(sessaoRequest.getPautaId())
-                .orElseThrow(() -> new GlobalRuntimeExceptionHandler("Pauta não encontrada"));
+                .orElseThrow(() -> new PautaNaoEncontradaException(HttpStatus.NOT_FOUND));
         if(pauta.getStatus() == PautaStatus.CRIADA){
             pauta.abrirSessao(sessaoRequest);
         }else{
-            throw new GlobalRuntimeExceptionHandler("Sessão da pauta fechada.");
+            throw new PautaFechadaException(HttpStatus.FORBIDDEN);
         }
 
         return SessaoMapper.toSessaoResponse(pautaRepository.save(pauta));
@@ -57,7 +59,7 @@ public class PautaService {
 
     public ResultadoResponse getResultadoPauta(Long id){
         Pauta pauta = pautaRepository.findById(id)
-                .orElseThrow(() -> new GlobalRuntimeExceptionHandler("Pauta não encontrada"));
+                .orElseThrow(() -> new PautaNaoEncontradaException(HttpStatus.NOT_FOUND));
         return obterResultado(pauta);
     }
 
