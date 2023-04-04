@@ -61,17 +61,17 @@ public class PautaService {
         return obterResultado(pauta);
     }
 
-    @Scheduled(fixedDelay = 30000)
+    @Scheduled(fixedDelay = 10000)
     public void enviarResultados(){
         pautaRepository.findByStatus(PautaStatus.ABERTA).stream()
                 .filter(p -> p.getFim_sessao().isBefore(LocalDateTime.now()))
                 .forEach(pauta -> {
+                    LOGGER.info("Atualizando status da pauta: "+pauta.getId());
+                    atualizarPauta(pauta);
+
                     ResultadoResponse resultadoResponse = obterResultado(pauta);
                     LOGGER.info("Enviando resultado: "+resultadoResponse);
                     kafkaProducer.send(resultadoResponse.toString());
-
-                    LOGGER.info("Atualizando status da pauta: "+pauta.getId());
-                    atualizarPauta(pauta);
                 });
 
     }

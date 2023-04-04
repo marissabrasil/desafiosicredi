@@ -40,7 +40,7 @@ public class Pauta {
     public void abrirSessao(SessaoRequest sessaoRequest){
         this.status = PautaStatus.ABERTA;
         this.inicio_sessao = LocalDateTime.now();
-        this.fim_sessao = this.inicio_sessao.plusMinutes(sessaoRequest.getDuracao());
+        this.fim_sessao = this.inicio_sessao.plusMinutes(sessaoRequest.getDuracao() == 0 ? 1 : sessaoRequest.getDuracao());
     }
 
 }

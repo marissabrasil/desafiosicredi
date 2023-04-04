@@ -11,5 +11,5 @@ import lombok.Setter;
 public class SessaoRequest {
     @NotNull(message = "O campo pautaId é obrigatório")
     private Long pautaId;
-    private int duracao = 1;
+    private int duracao;
 }
